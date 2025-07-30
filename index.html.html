@@ -144,67 +144,7 @@
         button:hover {
             background-color: #0056b3;
         }
-
-        /* Custom Modal Styles */
-        #customAlertModal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            display: flex; /* Use flexbox for centering */
-            justify-content: center;
-            align-items: center;
-        }
-
-        #customAlertModal > div {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 300px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-
-        #customAlertModal p {
-            margin-bottom: 20px;
-            font-size: 1.1em;
-            color: #333;
-        }
-
-        #customAlertModal button {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: auto; /* Override 100% width from general button style */
-        }
-
-        #customAlertModal button:hover {
-            background-color: #0056b3;
-        }
-
-
-        /* Media query for larger screens (optional, but good practice for desktop layout) */
-        @media (min-width: 600px) {
-            .buttons-container {
-                flex-direction: row; /* Buttons side-by-side on wider screens */
-                justify-content: space-around;
-            }
-            button {
-                width: auto; /* Let buttons size naturally based on content */
-                flex-grow: 1; /* Allow them to grow if needed */
-            }
-        }
+        /* Removed Custom Modal Styles as per request */
     </style>
 </head>
 <body>
@@ -356,14 +296,6 @@
         <button id="saveButton">Save as Image</button>
     </div>
 
-    <!-- Custom Modal Structure -->
-    <div id="customAlertModal">
-        <div>
-            <p id="alertMessage"></p>
-            <button id="closeAlertButton">OK</button>
-        </div>
-    </div>
-
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // Subtraction values based on position applied
@@ -504,16 +436,16 @@
             return getPointsFromIncrementTable(increments);
         };
 
-        // Function to show custom alert modal
-        const showMessage = (message) => {
-            document.getElementById('alertMessage').textContent = message;
-            document.getElementById('customAlertModal').style.display = 'flex';
-        };
+        // Removed showMessage function and customAlertModal HTML
+        // const showMessage = (message) => {
+        //     document.getElementById('alertMessage').textContent = message;
+        //     document.getElementById('customAlertModal').style.display = 'flex';
+        // };
 
-        // Event listener for closing the custom alert modal
-        document.getElementById('closeAlertButton').addEventListener('click', () => {
-            document.getElementById('customAlertModal').style.display = 'none';
-        });
+        // Event listener for closing the custom alert modal (removed as modal is removed)
+        // document.getElementById('closeAlertButton').addEventListener('click', () => {
+        //     document.getElementById('customAlertModal').style.display = 'none';
+        // });
 
         // Get references to all input fields that need to be toggled
         const togglableInputs = [
@@ -578,16 +510,14 @@
             let cois = parseInt(document.getElementById('cois').value) || 0;
             let ncois = parseInt(document.getElementById('ncois').value) || 0;
 
-            // Validate PPST COIs
+            // Validate PPST COIs - now clamps without message
             if (cois > 25) {
-                showMessage("PPST COIs cannot exceed 25. Value has been set to 25.");
                 cois = 25;
                 document.getElementById('cois').value = 25;
             }
 
-            // Validate PPST NCOIs
+            // Validate PPST NCOIs - now clamps without message
             if (ncois > 15) {
-                showMessage("PPST NCOIs cannot exceed 15. Value has been set to 15.");
                 ncois = 15;
                 document.getElementById('ncois').value = 15;
             }
