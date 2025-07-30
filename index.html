@@ -4,155 +4,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Career Progression Points Calculator (Teacher II–VII ES & JHS)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Custom styles for Inter font and rounded corners, if not fully covered by Tailwind */
         body {
-            font-family: Arial, sans-serif;
-            padding: 10px; /* Reduced padding for mobile */
-            background: #f7f7f7;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Center content horizontally */
-            box-sizing: border-box; /* Include padding in element's total width */
+            font-family: "Inter", sans-serif;
         }
-        #calculatorContainer {
-            width: 95%;
-            max-width: 500px; /* Limit the max width for larger screens */
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* More pronounced shadow for the whole captured area */
-            box-sizing: border-box; /* Ensure padding is included in the width */
-            margin-bottom: 20px; /* Space between calculator and buttons */
+        /* Ensure inputs and selects have rounded corners as per general instructions */
+        input[type="number"], select {
+            border-radius: 0.375rem; /* Tailwind's rounded-md */
+            box-sizing: border-box; /* Ensure padding is included in element's total width/height */
         }
-        /* Adjusted h1 style to fit within the container */
-        #calculatorContainer h1 { /* Target h1 specifically inside calculatorContainer */
-            color: #333;
-            text-align: center;
-            width: 100%; /* H1 takes full width of its container */
-            margin-top: 0; /* Remove default top margin */
-            margin-bottom: 15px;
-            font-size: 1.5em; /* Adjust font size for mobile readability */
-        }
-        .position-select-container {
-            width: 100%; /* Takes full width of #calculatorContainer */
-            margin-bottom: 15px;
-            text-align: left;
-            padding: 0 5px; /* Add some horizontal padding */
-            box-sizing: border-box;
-        }
-        .position-select-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        .position-select-container select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1em;
-        }
-        /* Style for the instruction message */
-        #positionInstruction {
-            font-size: 0.85em; /* Smaller font size */
-            color: red; /* Red font color */
-            margin-top: 5px;
-            text-align: left;
-            padding-left: 5px; /* Align with dropdown label */
-            display: none; /* Hidden by default */
-        }
-        /* Style for the disclaimer text */
-        #disclaimerText {
-            font-size: 0.75em; /* Even smaller font size for disclaimer */
-            color: #666; /* Gray font color */
-            margin-top: 20px; /* Space above disclaimer */
-            text-align: left; /* Aligned to the left */
-            padding: 0 5px; /* Consistent padding */
-        }
+        /* Specific table styling not easily done with Tailwind classes directly on elements */
         table {
             border-collapse: collapse;
-            width: 100%; /* Make table responsive to its container */
-            background: #fff;
-            margin-bottom: 0; /* Remove bottom margin as container handles it */
         }
         th, td {
-            border: 1px solid #ccc;
-            padding: 8px; /* Slightly reduced padding for cells */
-            text-align: left;
-            font-size: 0.9em; /* Adjust font size for mobile readability */
+            border: 1px solid #e5e7eb; /* Tailwind's border-gray-300 */
+            /* Increased vertical padding for table cells */
+            padding: 1rem 0.5rem; /* More generous padding: py-4 px-2 */
+            vertical-align: middle; /* Ensure content is vertically centered */
         }
-        th {
-            background-color: #f0f0f0;
-        }
-        /* Center the CRITERIA text inside its cell */
-        th:first-child {
-            text-align: center;
-        }
-        /* Center the CREDENTIAL DETAILS text inside its cell */
-        th:nth-child(2) {
-            text-align: center;
-        }
-        /* Consistent width for select and input fields */
+        /* Adjust padding for the input/select elements themselves to be consistent */
         input[type="number"], select {
-            width: 100%;
-            padding: 6px; /* Slightly increased padding for better touch targets */
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 0.5rem; /* Equivalent to Tailwind's py-2 px-2 */
+            line-height: 1.5; /* Ensure consistent line height */
+            /* Ensure they fill the cell, overriding potential default smaller width */
+            width: 100%; 
         }
-        /* Adjust width of the credentials column (responsive) */
-        td:nth-child(2) {
-            width: 65%; /* Give more space to the input fields */
-        }
-        /* Center text in the points column */
-        td:nth-child(3), th:nth-child(3) {
-            text-align: center;
-            width: 30%; /* Allocate specific width */
-            white-space: nowrap; /* Prevent wrapping for the points column */
-        }
-        /* Center the total points in the total row */
-        #totalPoints {
-            display: block;
-            text-align: center;
-            width: 100%;
-            font-weight: bold;
-        }
-        /* Prevent text wrapping for specific criteria labels */
-        .criteria-nowrap {
-            white-space: nowrap;
-        }
-        .buttons-container {
-            width: 95%; /* Make button container responsive */
-            max-width: 500px; /* Match table max width */
-            display: flex;
-            flex-direction: column; /* Stack buttons vertically on mobile */
-            gap: 10px;
-        }
-        button {
-            padding: 12px 15px; /* Larger padding for better touch targets */
-            font-size: 1em; /* Readable font size */
+        /* Custom radio button styling to match Tailwind aesthetics */
+        .form-radio {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            border: 2px solid #d1d5db; /* gray-300 */
+            background-color: #fff;
+            vertical-align: middle;
+            transition: all 0.2s ease-in-out;
             cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: white;
-            transition: background-color 0.3s ease;
-            width: 100%; /* Full width for buttons on mobile */
         }
-        button:hover {
-            background-color: #0056b3;
+        .form-radio:checked {
+            border-color: transparent;
+            background-color: currentColor; /* Uses the text color of the parent (e.g., text-blue-600) */
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
         }
-        /* Removed Custom Modal Styles as per request */
+        .form-radio:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* blue-500 with opacity */
+        }
     </style>
 </head>
-<body>
-    <div id="calculatorContainer">
-        <h1>Career Progression Points Calculator (Teacher II–VII ES & JHS)</h1>
-        <div class="position-select-container">
-            <label for="positionApplied">Position Applying for:</label>
-            <select id="positionApplied">
+<body class="bg-gray-100 flex flex-col items-center p-4 min-h-screen">
+    <div id="calculatorContainer" class="w-full max-w-md bg-white p-6 rounded-lg shadow-xl mb-6 box-border">
+        <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">Career Progression Points Calculator <br>(Teacher II–VII ES & JHS)</h1>
+        
+        <div class="mb-4 text-left px-1 box-border">
+            <label for="positionApplied" class="block text-gray-700 font-semibold mb-1">Position Applying for:</label>
+            <select id="positionApplied" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base">
                 <option value="">-- Select Position --</option>
                 <option value="Teacher II">Teacher II</option>
                 <option value="Teacher III">Teacher III</option>
@@ -161,22 +77,121 @@
                 <option value="Teacher VI">Teacher VI</option>
                 <option value="Teacher VII">Teacher VII</option>
             </select>
-            <div id="positionInstruction">Select a position first</div>
+            <div id="positionInstruction" class="text-red-600 text-sm mt-1 pl-1 hidden">Select a position first</div>
         </div>
 
-        <table>
+        <!-- Qualification Assessment Section moved here -->
+        <div id="qualificationAssessmentContainer" class="w-full bg-white p-6 rounded-lg shadow-inner mb-6 box-border">
+            <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Qualification Assessment</h2>
+
+            <div class="mb-3">
+                <p class="text-gray-700 mb-2">1. Do you have a Bachelor's degree in Education, or a Bachelor's degree in a relevant subject or learning area with at least 18 professional units in Education?</p>
+                <div class="flex items-center space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q1" value="yes" class="form-radio text-blue-600" disabled>
+                        <span class="ml-2 text-gray-700">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q1" value="no" class="form-radio text-red-600" disabled>
+                        <span class="ml-2 text-gray-700">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <p class="text-gray-700 mb-2">2. Do you have at least the required number of training hours in any of or a cumulative of the following: Curriculum, Pedagogy, Subject Specialization acquired within the last 5 years?</p>
+                <ul class="list-disc list-inside text-gray-600 text-sm ml-4 mb-2">
+                    <li>8 hours (if applying for T2)</li>
+                    <li>16 hours (if applying for T3-4)</li>
+                    <li>24 hours (if applying for T5-6)</li>
+                    <li>32 hours (if applying for T7)</li>
+                </ul>
+                <div class="flex items-center space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q2" value="yes" class="form-radio text-blue-600" disabled>
+                        <span class="ml-2 text-gray-700">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q2" value="no" class="form-radio text-red-600" disabled>
+                        <span class="ml-2 text-gray-700">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <p class="text-gray-700 mb-2">3. Do you have at least the required teaching experience?</p>
+                <ul class="list-disc list-inside text-gray-600 text-sm ml-4 mb-2">
+                    <li>1 year (if applying for T2)</li>
+                    <li>2 years (if applying for T3)</li>
+                    <li>3 years (if applying for T4-5)</li>
+                    <li>4 years (if applying for T5-6)</li>
+                </ul>
+                <div class="flex items-center space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q3" value="yes" class="form-radio text-blue-600" disabled>
+                        <span class="ml-2 text-gray-700">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q3" value="no" class="form-radio text-red-600" disabled>
+                        <span class="ml-2 text-gray-700">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <p class="text-gray-700 mb-2">4. Are you a RA 1080 Eligibility holder?</p>
+                <div class="flex items-center space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q4" value="yes" class="form-radio text-blue-600" disabled>
+                        <span class="ml-2 text-gray-700">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q4" value="no" class="form-radio text-red-600" disabled>
+                        <span class="ml-2 text-gray-700">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <p class="text-gray-700 mb-2">5. Do you have at least the required Proficient COIs and NCOIs?</p>
+                <ul class="list-disc list-inside text-gray-600 text-sm ml-4 mb-2">
+                    <li>at least 6 proficient COIs at Very Satisfactory; and at least 4 Proficient NCOIs at Very Satisfactory (if applying for T2)</li>
+                    <li>at least 12 proficient COIs at Very Satisfactory; and at least 8 Proficient NCOIs at Very Satisfactory (if applying for T3)</li>
+                    <li>21 proficient COIs at Very Satisfactory; and at 16 Proficient NCOIs at Very Satisfactory (if applying for T4)</li>
+                    <li>at least 6 proficient COIs at Outstanding; and at least 4 Proficient NCOIs at Outstanding (if applying for T5)</li>
+                    <li>at least 12 proficient COIs at Outstanding; and at least 4 Proficient NCOIs at Very Satisfactory and 4 proficient NCOIs at Outstanding (if applying for T6)</li>
+                    <li>at least 18 proficient COIs at Outstanding; and at least 6 Proficient NCOIs at Very Satisfactory and 6 proficient NCOIs at Outstanding (if applying for T7)</li>
+                </ul>
+                <div class="flex items-center space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q5" value="yes" class="form-radio text-blue-600" disabled>
+                        <span class="ml-2 text-gray-700">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="q5" value="no" class="form-radio text-red-600" disabled>
+                        <span class="ml-2 text-gray-700">No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mt-6 text-center">
+                <p class="text-lg font-bold text-gray-800">Remark: <span id="qualificationRemark" class="text-blue-600">--</span></p>
+            </div>
+        </div>
+
+        <table class="w-full bg-white rounded-lg overflow-hidden">
             <thead>
                 <tr>
-                    <th>CRITERIA</th>
-                    <th>CREDENTIAL DETAILS</th>
-                    <th>POINTS</th>
+                    <th class="p-2 bg-gray-200 text-gray-700 text-center text-sm w-1/4">CRITERIA</th>
+                    <th class="p-2 bg-gray-200 text-gray-700 text-center text-sm w-1/2">CREDENTIAL DETAILS</th>
+                    <th class="p-2 bg-gray-200 text-gray-700 text-center text-sm whitespace-nowrap w-1/4">POINTS</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Education</td>
-                    <td>
-                        <select id="education" disabled>
+                    <td class="p-2 text-sm">Education</td>
+                    <td class="p-2">
+                        <select id="education" disabled class="w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                             <option value="-1">-- Select --</option>
                             <option value="0">No units in Master's Degree</option>
                             <option value="1">1 unit in Master's Degree</option>
@@ -253,47 +268,61 @@
                             <option value="72">Doctorate Degree Holder</option>
                         </select>
                     </td>
-                    <td><span id="eduPoints">0</span> /10</td>
+                    <td class="p-2 text-center text-sm whitespace-nowrap"><span id="eduPoints">0</span> /10</td>
                 </tr>
                 <tr>
-                    <td>Training</td>
-                    <td><input type="number" id="training" min="0" placeholder="Total hours of training" disabled></td>
-                    <td><span id="trainPoints">0</span> /10</td>
+                    <td class="p-2 text-sm">Training</td>
+                    <td class="p-2">
+                        <input type="number" id="training" min="0" placeholder="Total hours of training" disabled class="w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </td>
+                    <td class="p-2 text-center text-sm whitespace-nowrap"><span id="trainPoints">0</span> /10</td>
                 </tr>
                 <tr>
-                    <td>Experience</td>
-                    <td><input type="number" id="experience" min="0" placeholder="Total months of experience" disabled></td>
-                    <td><span id="expPoints">0</span> /10</td>
+                    <td class="p-2 text-sm">Experience</td>
+                    <td class="p-2">
+                        <input type="number" id="experience" min="0" placeholder="Total months of experience" disabled class="w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </td>
+                    <td class="p-2 text-center text-sm whitespace-nowrap"><span id="expPoints">0</span> /10</td>
                 </tr>
                 <tr>
-                    <td>Performance</td>
-                    <td><input type="number" id="performance" min="0" max="5" step="0.01" placeholder="Final rating (SY 24-25 IPCRF)" disabled></td>
-                    <td><span id="perfPoints">0</span> /30</td>
+                    <td class="p-2 text-sm">Performance</td>
+                    <td class="p-2">
+                        <input type="number" id="performance" min="0" max="5" step="0.01" placeholder="Final rating (SY 24-25 IPCRF)" disabled class="w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </td>
+                    <td class="p-2 text-center text-sm whitespace-nowrap"><span id="perfPoints">0</span> /30</td>
                 </tr>
                 <tr>
-                    <td class="criteria-nowrap">PPST COIs</td>
-                    <td><input type="number" id="cois" min="0" max="25" placeholder="Enter COIs (max 25)" disabled></td>
-                    <td><span id="coisPoints">0</span> /25</td>
+                    <td class="p-2 text-sm whitespace-nowrap">PPST COIs</td>
+                    <td class="p-2">
+                        <span class="text-gray-500 italic text-sm">To be rated after demo</span>
+                    </td>
+                    <td class="p-2 text-center text-sm whitespace-nowrap"><span id="coisPoints">0</span> /25</td>
                 </tr>
                 <tr>
-                    <td class="criteria-nowrap">PPST NCOIs</td>
-                    <td><input type="number" id="ncois" min="0" max="15" placeholder="Enter NCOIs (max 15)" disabled></td>
-                    <td><span id="ncoisPoints">0</span> /15</td>
+                    <td class="p-2 text-sm whitespace-nowrap">PPST NCOIs</td>
+                    <td class="p-2">
+                        <span class="text-gray-500 italic text-sm">To be validated through MOVs</span>
+                    </td>
+                    <td class="p-2 text-center text-sm whitespace-nowrap"><span id="ncoisPoints">0</span> /15</td>
                 </tr>
                 <tr>
-                    <th colspan="2">TOTAL POINTS</th>
-                    <th><span id="totalPoints">0</span></th>
+                    <th colspan="2" class="p-2 bg-gray-200 text-gray-700 text-left text-base font-bold">PARTIAL POINTS EARNED</th>
+                    <th class="p-2 bg-gray-200 text-gray-700 text-center text-base font-bold whitespace-nowrap"><span id="totalPoints">0</span></th>
                 </tr>
             </tbody>
         </table>
-        <div id="disclaimerText">
+        <div id="disclaimerText" class="text-gray-600 text-xs mt-4 text-left px-1">
             Disclaimer: This calculator is an unofficial tool and is not provided or endorsed by the Department of Education (DepEd). It is intended solely to assist applicants in estimating their points based on existing guidelines. For official evaluation and results, please refer to your respective HR or division office.
         </div>
     </div>
 
-    <div class="buttons-container">
-        <button id="resetButton">Reset Fields</button>
-        <button id="saveButton">Save as Image</button>
+    <div class="buttons-container w-full max-w-md flex flex-col gap-3">
+        <button id="resetButton" class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out">
+            Reset Fields
+        </button>
+        <button id="saveButton" class="w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 ease-in-out">
+            Save as Image
+        </button>
     </div>
 
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -309,12 +338,16 @@
         };
 
         // Education points lookup
+        // This array maps the selected option value (index) to a corresponding "level" before subtraction.
+        // The actual points (0-10) are derived from this level minus the position's required subtraction.
         const educationPointsLookup = [
             6, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 20,
             21, 21, 21, 22, 22, 22, 23, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 30, 31
         ];
 
         // Generic function to map calculated increments to final points (0-10)
+        // This function ensures the points awarded for Education, Training, and Experience
+        // are capped at 10 and follow a specific increment rule.
         const getPointsFromIncrementTable = (increments) => {
             if (increments >= 10) return 10;
             if (increments >= 8) return 8;
@@ -324,16 +357,22 @@
             return 0;
         };
 
+        // Calculates Education points based on selected units/degree and position's subtraction.
         const getEducationPoints = (eduIndex, eduSubtract) => {
+            // If no option selected or invalid index, return 0 points.
             if (eduIndex === -1 || isNaN(eduIndex) || eduIndex >= educationPointsLookup.length) {
                 return 0;
             }
+            // Get the corresponding "level" from the lookup table.
             const correspondingLevel = educationPointsLookup[eduIndex];
+            // Calculate increments by subtracting the position's requirement.
             const increments = correspondingLevel - eduSubtract;
+            // Return the final points using the generic increment table.
             return getPointsFromIncrementTable(increments);
         };
 
         // Training hours to level lookup
+        // This array maps total training hours (index) to a corresponding "level".
         const trainingLevels = [
             1, 1, 1, 1, 1, 1, 1, 1, // 0-7 hours -> level 1
             2, 2, 2, 2, 2, 2, 2, 2, // 8-15 hours -> level 2
@@ -369,21 +408,23 @@
             31 // 240 hours or more -> level 31 (for any hours >= 240, it will cap at level 31)
         ];
 
+        // Calculates Training points based on total hours and position's subtraction.
         const getTrainingPoints = (hours, trainSubtract) => {
             let selectedLevel = 0;
+            // If hours exceed the lookup table length, use the maximum level.
             if (hours >= trainingLevels.length) {
-                selectedLevel = trainingLevels[trainingLevels.length - 1]; // Use max level if hours exceed the list
+                selectedLevel = trainingLevels[trainingLevels.length - 1];
             } else if (hours >= 0) {
+                // Otherwise, use the direct mapping from hours to level.
                 selectedLevel = trainingLevels[hours];
-            } else {
-                selectedLevel = 0; // For negative or invalid input
             }
-                
+            // Calculate increments and return final points.
             const increments = selectedLevel - trainSubtract;
             return getPointsFromIncrementTable(increments);
         };
 
         // Experience months to level lookup
+        // This array maps total experience months (index) to a corresponding "level".
         const experienceLevels = [
             0, 0, 0, 0, 0, // Months 0-4 (assuming 0 points for less than 5 months as per previous behavior)
             1, // 5 months
@@ -419,33 +460,21 @@
             31, 31 // 180 months or more -> level 31 (for any months >= 180, it will cap at level 31)
         ];
 
+        // Calculates Experience points based on total months and position's subtraction.
         const getExperiencePoints = (months, expSubtract) => {
             let selectedLevel = 0;
-            // Handle months less than 5 explicitly as per your provided list start
+            // Handle months less than 5 explicitly as per your provided list start.
             if (months < 5) {
-                selectedLevel = 0; // If less than 5 months, assuming 0 points.
+                selectedLevel = 0;
             } else if (months >= experienceLevels.length + 5 - 1) { // Adjusted to correctly index beyond 180 months
-                selectedLevel = experienceLevels[experienceLevels.length - 1]; // Use max level if months exceed the list
+                selectedLevel = experienceLevels[experienceLevels.length - 1];
             } else if (months >= 0) {
                 selectedLevel = experienceLevels[months]; // Direct mapping based on index (assuming index starts from 0 for 0 months)
-            } else {
-                selectedLevel = 0; // For negative or invalid input
             }
-
+            // Calculate increments and return final points.
             const increments = selectedLevel - expSubtract;
             return getPointsFromIncrementTable(increments);
         };
-
-        // Removed showMessage function and customAlertModal HTML
-        // const showMessage = (message) => {
-        //     document.getElementById('alertMessage').textContent = message;
-        //     document.getElementById('customAlertModal').style.display = 'flex';
-        // };
-
-        // Event listener for closing the custom alert modal (removed as modal is removed)
-        // document.getElementById('closeAlertButton').addEventListener('click', () => {
-        //     document.getElementById('customAlertModal').style.display = 'none';
-        // });
 
         // Get references to all input fields that need to be toggled
         const togglableInputs = [
@@ -453,26 +482,36 @@
             document.getElementById('training'),
             document.getElementById('experience'),
             document.getElementById('performance'),
-            document.getElementById('cois'),
-            document.getElementById('ncois')
+            // Add new radio buttons to the list of togglable inputs
+            ...document.querySelectorAll('input[name="q1"]'),
+            ...document.querySelectorAll('input[name="q2"]'),
+            ...document.querySelectorAll('input[name="q3"]'),
+            ...document.querySelectorAll('input[name="q4"]'),
+            ...document.querySelectorAll('input[name="q5"]')
         ];
 
         // Function to enable or disable input fields
         const toggleInputFields = (enable) => {
             togglableInputs.forEach(input => {
-                input.disabled = !enable;
-                // Reset values when disabling to prevent stale data from affecting calculations
-                if (!enable) {
+                if (enable) {
+                    input.removeAttribute('disabled'); // Explicitly remove disabled attribute
+                } else {
+                    input.setAttribute('disabled', 'true'); // Explicitly add disabled attribute
+                    // Reset values when disabling to prevent stale data from affecting calculations
                     if (input.tagName === 'SELECT') {
-                        input.value = "-1"; // For select elements
+                        input.value = "-1"; // For select elements, reset to default "-- Select --"
+                    } else if (input.type === 'radio') {
+                        input.checked = false; // Uncheck radio buttons
                     } else {
-                        input.value = ""; // For number inputs
+                        input.value = ""; // For number inputs, clear the value
                     }
                 }
             });
             updatePoints(); // Recalculate points after toggling
+            checkQualification(); // Also update qualification remark
         };
 
+        // Main function to update all calculated points and total
         const updatePoints = () => {
             const positionApplied = document.getElementById('positionApplied').value;
             const positionInstruction = document.getElementById('positionInstruction');
@@ -482,18 +521,18 @@
 
             // Show/hide instruction message based on position selection
             if (!positionApplied) {
-                positionInstruction.style.display = 'block'; // Show the message
+                positionInstruction.classList.remove('hidden'); // Show the message
                 // If no position is selected, ensure all points are 0
                 document.getElementById('eduPoints').textContent = 0;
                 document.getElementById('trainPoints').textContent = 0;
                 document.getElementById('expPoints').textContent = 0;
                 document.getElementById('perfPoints').textContent = (0).toFixed(2);
-                document.getElementById('coisPoints').textContent = 0;
-                document.getElementById('ncoisPoints').textContent = 0;
+                document.getElementById('coisPoints').textContent = 0; // COIs now contribute 0
+                document.getElementById('ncoisPoints').textContent = 0; // NCOIs now contribute 0
                 document.getElementById('totalPoints').textContent = (0).toFixed(2);
                 return; // Stop the function here
             } else {
-                positionInstruction.style.display = 'none'; // Hide the message
+                positionInstruction.classList.add('hidden'); // Hide the message
             }
 
             // Set subtraction values based on selected position
@@ -503,38 +542,29 @@
                 expSubtract = subtractionValues[positionApplied].experience;
             }
 
+            // Parse input values, defaulting to 0 if empty or invalid
             const eduIndex = parseInt(document.getElementById('education').value);
             const trainHours = parseInt(document.getElementById('training').value) || 0;
             const expMonths = parseInt(document.getElementById('experience').value) || 0;
             const performanceInput = parseFloat(document.getElementById('performance').value) || 0;
-            let cois = parseInt(document.getElementById('cois').value) || 0;
-            let ncois = parseInt(document.getElementById('ncois').value) || 0;
+            // cois and ncois are no longer inputs, so their points are 0 for partial points earned
+            const cois = 0;
+            const ncois = 0;
 
-            // Validate PPST COIs - now clamps without message
-            if (cois > 25) {
-                cois = 25;
-                document.getElementById('cois').value = 25;
-            }
-
-            // Validate PPST NCOIs - now clamps without message
-            if (ncois > 15) {
-                ncois = 15;
-                document.getElementById('ncois').value = 15;
-            }
-
+            // Calculate points for each criterion
             const calculatedEduPoints = getEducationPoints(eduIndex, eduSubtract);
             const trainPoints = getTrainingPoints(trainHours, trainSubtract);
             const expPoints = getExperiencePoints(expMonths, expSubtract);
 
-            // Performance calculation: (input value / 5) * 30
+            // Performance calculation: (input value / max rating) * max points
             const perfPoints = (performanceInput / 5) * 30;
-            // Ensure performance points do not exceed the max possible (30) if input is scaled or clamped
+            // Ensure performance points do not exceed the max possible (30)
             const finalPerfPoints = Math.min(perfPoints, 30);
-
 
             const coisPoints = cois;
             const ncoisPoints = ncois;
 
+            // Update the display for each criterion's points
             document.getElementById('eduPoints').textContent = calculatedEduPoints;
             document.getElementById('trainPoints').textContent = trainPoints;
             document.getElementById('expPoints').textContent = expPoints;
@@ -542,17 +572,74 @@
             document.getElementById('coisPoints').textContent = coisPoints;
             document.getElementById('ncoisPoints').textContent = ncoisPoints;
 
+            // Calculate and display the total points
             const total = calculatedEduPoints + trainPoints + expPoints + finalPerfPoints + coisPoints + ncoisPoints;
             document.getElementById('totalPoints').textContent = total.toFixed(2); /* Show 2 decimal places for total */
         };
 
-        // Attach event listeners to all input and select elements for real-time updates
+        // Function to check qualification based on radio button answers
+        const checkQualification = () => {
+            const positionApplied = document.getElementById('positionApplied').value;
+            const remarkElement = document.getElementById('qualificationRemark');
+
+            // If no position is selected, display "--" and return
+            if (!positionApplied) {
+                remarkElement.textContent = "--";
+                remarkElement.classList.remove('text-green-600', 'text-red-600');
+                remarkElement.classList.add('text-blue-600');
+                return;
+            }
+
+            // Get answers for each question
+            const q1Answer = document.querySelector('input[name="q1"]:checked')?.value;
+            const q2Answer = document.querySelector('input[name="q2"]:checked')?.value;
+            const q3Answer = document.querySelector('input[name="q3"]:checked')?.value;
+            const q4Answer = document.querySelector('input[name="q4"]:checked')?.value;
+            const q5Answer = document.querySelector('input[name="q5"]:checked')?.value;
+
+            // Check if all questions are answered. If not, set remark to "--" and exit.
+            if (!q1Answer || !q2Answer || !q3Answer || !q4Answer || !q5Answer) {
+                remarkElement.textContent = "--";
+                remarkElement.classList.remove('text-green-600', 'text-red-600');
+                remarkElement.classList.add('text-blue-600');
+                return;
+            }
+
+            // Determine qualification: all must be 'yes'
+            let allAnsweredYes = (q1Answer === 'yes' &&
+                                  q2Answer === 'yes' &&
+                                  q3Answer === 'yes' &&
+                                  q4Answer === 'yes' &&
+                                  q5Answer === 'yes');
+
+            // Update the remark text and color based on qualification status
+            if (allAnsweredYes) {
+                remarkElement.textContent = "Qualified";
+                remarkElement.classList.remove('text-red-600', 'text-blue-600');
+                remarkElement.classList.add('text-green-600');
+            } else {
+                remarkElement.textContent = "Not Qualified";
+                remarkElement.classList.remove('text-green-600', 'text-blue-600');
+                remarkElement.classList.add('text-red-600');
+            }
+        };
+
+        // Attach event listeners to all relevant input and select elements for real-time updates
         document.querySelectorAll('input, select').forEach(input => {
-            // Exclude the positionApplied dropdown itself from this general listener
-            if (input.id !== 'positionApplied') {
+            // Exclude the positionApplied dropdown itself from this general listener,
+            // as it has its own specific change listener.
+            // Also exclude the new descriptive spans for COIs/NCOIs as they are not inputs.
+            if (input.id !== 'positionApplied' && input.type !== 'radio') {
                 input.addEventListener('input', updatePoints);
                 input.addEventListener('change', updatePoints);
             }
+        });
+
+        // Add event listeners for the new radio buttons to trigger qualification check
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                checkQualification(); // Only check qualification for radio button changes
+            });
         });
 
         // Specific event listener for the positionApplied dropdown
@@ -564,32 +651,53 @@
                 toggleInputFields(true); // Enable if a valid position is chosen
             }
             updatePoints(); // Always update points after position change
+            checkQualification(); // Also update qualification remark after position change
         });
 
-        // Reset button functionality
+        // Reset button functionality: Clears all inputs and resets the calculator state.
         document.getElementById('resetButton').addEventListener('click', () => {
             document.getElementById('positionApplied').value = ""; // Reset position dropdown
             toggleInputFields(false); // Disable all other fields and reset their values
             updatePoints(); // Recalculate and update total (will be 0)
+            checkQualification(); // Reset qualification remark
         });
 
-        // Save as Image button functionality using html2canvas
+        // Save as Image button functionality using html2canvas library.
+        // Captures the entire calculator container as a PNG image.
         document.getElementById('saveButton').addEventListener('click', () => {
-            const calculatorContainer = document.getElementById('calculatorContainer'); // Target the calculator container
-            html2canvas(calculatorContainer, {
-                scale: 2, // Increase scale for higher resolution screenshot
-                useCORS: true // Important for capturing external images if any (though not here)
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'assessment_results.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
+            const calculatorContainer = document.getElementById('calculatorContainer');
+            const qualificationContainer = document.getElementById('qualificationAssessmentContainer');
+            
+            // Select all question divs within the qualification container
+            const questionDivs = qualificationContainer.querySelectorAll('.mb-3');
+
+            // Temporarily hide the question divs
+            questionDivs.forEach(div => div.classList.add('hidden'));
+
+            // Use a timeout to ensure the DOM update (hiding elements) has rendered
+            // before html2canvas takes the screenshot. A small delay is usually sufficient.
+            setTimeout(() => {
+                html2canvas(calculatorContainer, {
+                    scale: 2, // Increase scale for higher resolution screenshot
+                    useCORS: true // Important for capturing external images if any (though not used here)
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'assessment_results.png'; // Suggested filename
+                    link.href = canvas.toDataURL('image/png'); // Get image data as PNG
+                    link.click(); // Programmatically click the link to trigger download
+                }).finally(() => {
+                    // Restore the hidden question divs after capture (or error)
+                    questionDivs.forEach(div => div.classList.remove('hidden'));
+                });
+            }, 50); // Small delay to allow DOM to render hidden state
         });
 
-        // Initial setup on page load
-        toggleInputFields(false); // Disable all inputs initially
-        updatePoints(); // Set initial total to 0 and show instruction
+        // Initial setup on page load: Disable inputs and show instruction.
+        window.onload = function() {
+            toggleInputFields(false); // Disable all inputs initially
+            updatePoints(); // Set initial total to 0 and show instruction
+            checkQualification(); // Initial check for qualification remark
+        };
     </script>
 </body>
 </html>
