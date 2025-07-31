@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Career Progression Points Calculator (Teacher II–VII ES & JHS)</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom styles for Inter font and rounded corners, if not fully covered by Tailwind */
@@ -32,6 +31,8 @@
             line-height: 1.5; /* Ensure consistent line height */
             /* Ensure they fill the cell, overriding potential default smaller width */
             width: 100%; 
+            height: 2.5rem; /* Explicitly set a consistent height for inputs and selects */
+            vertical-align: middle; /* Center content vertically within the input/select */
         }
         /* Custom radio button styling to match Tailwind aesthetics */
         .form-radio {
@@ -80,7 +81,6 @@
             <div id="positionInstruction" class="text-red-600 text-sm mt-1 pl-1 hidden">Select a position first</div>
         </div>
 
-        <!-- Qualification Assessment Section moved here -->
         <div id="qualificationAssessmentContainer" class="w-full bg-white p-6 rounded-lg shadow-inner mb-6 box-border">
             <h2 class="text-xl font-bold text-gray-800 text-center mb-4">Qualification Assessment</h2>
 
@@ -320,12 +320,8 @@
         <button id="resetButton" class="w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out">
             Reset Fields
         </button>
-        <button id="saveButton" class="w-full py-3 px-4 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 ease-in-out">
-            Save as Image
-        </button>
     </div>
 
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
         // Subtraction values based on position applied
         const subtractionValues = {
@@ -660,36 +656,6 @@
             toggleInputFields(false); // Disable all other fields and reset their values
             updatePoints(); // Recalculate and update total (will be 0)
             checkQualification(); // Reset qualification remark
-        });
-
-        // Save as Image button functionality using html2canvas library.
-        // Captures the entire calculator container as a PNG image.
-        document.getElementById('saveButton').addEventListener('click', () => {
-            const calculatorContainer = document.getElementById('calculatorContainer');
-            const qualificationContainer = document.getElementById('qualificationAssessmentContainer');
-            
-            // Select all question divs within the qualification container
-            const questionDivs = qualificationContainer.querySelectorAll('.mb-3');
-
-            // Temporarily hide the question divs
-            questionDivs.forEach(div => div.classList.add('hidden'));
-
-            // Use a timeout to ensure the DOM update (hiding elements) has rendered
-            // before html2canvas takes the screenshot. A small delay is usually sufficient.
-            setTimeout(() => {
-                html2canvas(calculatorContainer, {
-                    scale: 2, // Increase scale for higher resolution screenshot
-                    useCORS: true // Important for capturing external images if any (though not used here)
-                }).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = 'assessment_results.png'; // Suggested filename
-                    link.href = canvas.toDataURL('image/png'); // Get image data as PNG
-                    link.click(); // Programmatically click the link to trigger download
-                }).finally(() => {
-                    // Restore the hidden question divs after capture (or error)
-                    questionDivs.forEach(div => div.classList.remove('hidden'));
-                });
-            }, 50); // Small delay to allow DOM to render hidden state
         });
 
         // Initial setup on page load: Disable inputs and show instruction.
